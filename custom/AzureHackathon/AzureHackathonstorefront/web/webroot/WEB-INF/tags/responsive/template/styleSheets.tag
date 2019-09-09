@@ -14,6 +14,7 @@
 	<c:otherwise>
 		<%-- Theme CSS files --%>
 		<link rel="stylesheet" type="text/css" media="all" href="${fn:escapeXml(themeResourcePath)}/css/style.css"/>
+		<link rel="stylesheet" type="text/css" media="all" href="${fn:escapeXml(commonResourcePath)}/botui-theme-default.css"/>
 		<%--  AddOn Common CSS files --%>
 		<c:forEach items="${addOnCommonCssPaths}" var="addOnCommonCss">
 			<link rel="stylesheet" type="text/css" media="all" href="${fn:escapeXml(addOnCommonCss)}"/>

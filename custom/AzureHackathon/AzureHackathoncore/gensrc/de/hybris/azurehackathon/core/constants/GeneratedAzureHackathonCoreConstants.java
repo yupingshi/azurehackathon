@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Sep 9, 2019 3:43:22 PM                      ---
+ * --- Generated at Sep 7, 2019 1:28:37 AM                      ---
  * ----------------------------------------------------------------
  *  
  * [y] hybris Platform
@@ -26,6 +26,8 @@ public class GeneratedAzureHackathonCoreConstants
 		public static final String APPARELPRODUCT = "ApparelProduct".intern();
 		public static final String APPARELSIZEVARIANTPRODUCT = "ApparelSizeVariantProduct".intern();
 		public static final String APPARELSTYLEVARIANTPRODUCT = "ApparelStyleVariantProduct".intern();
+		public static final String AZUREHACKTHONFAQBOTCOMPONENT = "AzureHackthonFAQBotComponent".intern();
+		public static final String AZUREHACKTHONSEARCHBOXCOMPONENT = "AzureHackthonSearchBoxComponent".intern();
 		public static final String ELECTRONICSCOLORVARIANTPRODUCT = "ElectronicsColorVariantProduct".intern();
 		public static final String SWATCHCOLORENUM = "SwatchColorEnum".intern();
 	}

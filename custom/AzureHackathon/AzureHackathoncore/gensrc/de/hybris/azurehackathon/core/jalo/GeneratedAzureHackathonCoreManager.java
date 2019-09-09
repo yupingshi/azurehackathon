@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Sep 9, 2019 3:43:22 PM                      ---
+ * --- Generated at Sep 7, 2019 1:28:37 AM                      ---
  * ----------------------------------------------------------------
  *  
  * [y] hybris Platform
@@ -17,7 +17,9 @@ import de.hybris.azurehackathon.core.constants.AzureHackathonCoreConstants;
 import de.hybris.azurehackathon.core.jalo.ApparelProduct;
 import de.hybris.azurehackathon.core.jalo.ApparelSizeVariantProduct;
 import de.hybris.azurehackathon.core.jalo.ApparelStyleVariantProduct;
+import de.hybris.azurehackathon.core.jalo.AzureHackthonSearchBoxComponent;
 import de.hybris.azurehackathon.core.jalo.ElectronicsColorVariantProduct;
+import de.hybris.platform.acceleratorcms.jalo.components.AzureHackthonFAQBotComponent;
 import de.hybris.platform.jalo.Item;
 import de.hybris.platform.jalo.Item.AttributeMode;
 import de.hybris.platform.jalo.JaloBusinessException;
@@ -129,6 +131,58 @@ public abstract class GeneratedAzureHackathonCoreManager extends Extension
 	public ApparelStyleVariantProduct createApparelStyleVariantProduct(final Map attributeValues)
 	{
 		return createApparelStyleVariantProduct( getSession().getSessionContext(), attributeValues );
+	}
+	
+	public AzureHackthonFAQBotComponent createAzureHackthonFAQBotComponent(final SessionContext ctx, final Map attributeValues)
+	{
+		try
+		{
+			ComposedType type = getTenant().getJaloConnection().getTypeManager().getComposedType( AzureHackathonCoreConstants.TC.AZUREHACKTHONFAQBOTCOMPONENT );
+			return (AzureHackthonFAQBotComponent)type.newInstance( ctx, attributeValues );
+		}
+		catch( JaloGenericCreationException e)
+		{
+			final Throwable cause = e.getCause();
+			throw (cause instanceof RuntimeException ?
+			(RuntimeException)cause
+			:
+			new JaloSystemException( cause, cause.getMessage(), e.getErrorCode() ) );
+		}
+		catch( JaloBusinessException e )
+		{
+			throw new JaloSystemException( e ,"error creating AzureHackthonFAQBotComponent : "+e.getMessage(), 0 );
+		}
+	}
+	
+	public AzureHackthonFAQBotComponent createAzureHackthonFAQBotComponent(final Map attributeValues)
+	{
+		return createAzureHackthonFAQBotComponent( getSession().getSessionContext(), attributeValues );
+	}
+	
+	public AzureHackthonSearchBoxComponent createAzureHackthonSearchBoxComponent(final SessionContext ctx, final Map attributeValues)
+	{
+		try
+		{
+			ComposedType type = getTenant().getJaloConnection().getTypeManager().getComposedType( AzureHackathonCoreConstants.TC.AZUREHACKTHONSEARCHBOXCOMPONENT );
+			return (AzureHackthonSearchBoxComponent)type.newInstance( ctx, attributeValues );
+		}
+		catch( JaloGenericCreationException e)
+		{
+			final Throwable cause = e.getCause();
+			throw (cause instanceof RuntimeException ?
+			(RuntimeException)cause
+			:
+			new JaloSystemException( cause, cause.getMessage(), e.getErrorCode() ) );
+		}
+		catch( JaloBusinessException e )
+		{
+			throw new JaloSystemException( e ,"error creating AzureHackthonSearchBoxComponent : "+e.getMessage(), 0 );
+		}
+	}
+	
+	public AzureHackthonSearchBoxComponent createAzureHackthonSearchBoxComponent(final Map attributeValues)
+	{
+		return createAzureHackthonSearchBoxComponent( getSession().getSessionContext(), attributeValues );
 	}
 	
 	public ElectronicsColorVariantProduct createElectronicsColorVariantProduct(final SessionContext ctx, final Map attributeValues)

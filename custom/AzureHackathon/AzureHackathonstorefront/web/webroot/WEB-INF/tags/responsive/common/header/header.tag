@@ -156,6 +156,18 @@
 					<ul class="nav__links nav__links--shop_info">
 						<li>
 							<c:if test="${empty hideHeaderLinks}">
+								<ycommerce:testId code="header_faq_link">
+									<div class="nav-location hidden-xs">
+										<c:url value="/azurehackahonfaq" var="faqUrl"/>
+										<a href="${fn:escapeXml(faqUrl)}" class="btn">
+											<span class="glyphicon glyphicon-question-sign"></span>
+										</a>
+									</div>
+								</ycommerce:testId>
+							</c:if>
+						</li>
+						<li>
+							<c:if test="${empty hideHeaderLinks}">
 								<ycommerce:testId code="header_StoreFinder_link">
 									<div class="nav-location hidden-xs">
 										<c:url value="/store-finder" var="storeFinderUrl"/>

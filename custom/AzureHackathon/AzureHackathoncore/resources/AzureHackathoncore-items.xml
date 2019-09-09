@@ -38,6 +38,51 @@
 
         <!-- Add your item definitions here -->
 
+		<itemtype code="AzureHackthonSearchBoxComponent" extends="SearchBoxComponent"
+                      autocreate="true" generate="true"
+                      jaloclass="de.hybris.azurehackathon.core.jalo.AzureHackthonSearchBoxComponent">
+                <description>Represents the search box component using Azure Voice Recognition.</description>
+                <attributes>
+                    <attribute qualifier="apikey" type="java.lang.String">
+                        <description>API_Key for consuming the Azure Service</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="region" type="java.lang.String">
+                        <description>region of the Azure Service</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+        </itemtype>
+        
+        <itemtype code="AzureHackthonFAQBotComponent" autocreate="true"
+				generate="true" extends="SimpleCMSComponent"
+				jaloclass="de.hybris.platform.acceleratorcms.jalo.components.AzureHackthonFAQBotComponent">
+				<description>Represents the AzureHackthonFAQBotComponent component.</description>
+				<attributes>
+					<attribute qualifier="endpointKey" type="java.lang.String">
+						<persistence type="property" />
+						<modifiers/>
+						<description>endpointKey for calling Azure FAQ Service</description>
+					</attribute>
+					<attribute qualifier="endpoint" type="java.lang.String">
+						<persistence type="property" />
+						<modifiers/>
+						<description>Service Endpoint</description>
+					</attribute>
+					<attribute qualifier="apikey" type="java.lang.String">
+                        <description>API_Key for consuming the Azure Service</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="region" type="java.lang.String">
+                        <description>region of the Azure Service</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>				
+				</attributes>
+		</itemtype>
 
         <!-- TypeGroups are for structure of this file only -->
 
