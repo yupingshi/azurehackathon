@@ -47,7 +47,11 @@ Extentions are built on 1811.9
         insert_update ElementsForSlot;&Item;creationtime[forceWrite=true,dateformat=dd.MM.yyyy hh:mm:ss];language(isocode)[unique=true];modifiedtime[dateformat=dd.MM.yyyy hh:mm:ss];owner(&Item)[forceWrite=true];qualifier;reverseSequenceNumber;sequenceNumber;source(catalogVersion(catalog(id),version),uid)[unique=true,allownull=true];target(catalogVersion(catalog(id),version),uid)[unique=true,allownull=true]
         ;Item589;05.09.2019 02:37:51;;05.09.2019 02:37:51;;ElementsForSlot;765,461,655;0;electronicsContentCatalog:Online:SearchBoxSlot;electronicsContentCatalog:Online:AzureHackathonSearchBox
 
-6. Then you should see the Azure Speech Recognition integration on the storefront.
+6. To make reference to the required js lib on pages, add file at: AzureHackathon/AzureHackathonstorefront/web/webroot/_ui/responsive/common/js/microsoft.cognitiveservices.speech.sdk.bundle.js and add following line at AzureHackathon/AzureHackathonstorefront/web/webroot/WEB-INF/tags/responsive/template/javaScript.tag
+
+        <script src="${commonResourcePathHtml}/js/microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
+
+7. Then you should see the Azure Speech Recognition integration on the storefront.
 
 
 
@@ -141,3 +145,6 @@ Extentions are built on 1811.9
 
 
 
+**Integrate Azure Ink Recognizer:**
+
+1. Modified the OOTB: AzureHackathon/AzureHackathonstorefront/web/webroot/WEB-INF/views/responsive/pages/quickOrder/quickOrderPage.jsp to enable Azure Ink Recognizer integration.
