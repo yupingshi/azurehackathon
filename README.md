@@ -38,11 +38,13 @@ Extentions are built on 1811.9
 
 3. The frontend code is implemented in AzureHackathon/AzureHackathonstorefront/web/webroot/WEB-INF/views/responsive/cms/azurehackthonsearchboxcomponent.jsp for new button and logic for calling the Speech Recognition service.
 4. Create a AzureHackthonSearchBoxComponent in backoffice or via impex like:
-           *insert_update AzureHackthonSearchBoxComponent;&Item;apikey;catalogVersion(catalog(id),version)[unique=true,allownull=true];creationtime[forceWrite=true,dateformat=dd.MM.yyyy hh:mm:ss];displayProductImages[allownull=true];displayProducts[allownull=true];displaySuggestions[allownull=true];maxProducts[allownull=true];maxSuggestions[allownull=true];minCharactersBeforeRequest[allownull=true];modifiedtime[dateformat=dd.MM.yyyy hh:mm:ss];name;onlyOneRestrictionMustApply[allownull=true];owner(&Item)[forceWrite=true];region;uid[unique=true,allownull=true];visible[allownull=true];waitTimeBeforeRequest[allownull=true]
-            ;Item1;xxxxxxxxxxxxx;electronicsContentCatalog:Online;05.09.2019 02:37:51;false;true;true;4;6;3;05.09.2019 03:46:23;Azurehackathon Search Box;false;;westus;AzureHackathonSearchBox;true;500*
+
+        insert_update AzureHackthonSearchBoxComponent;&Item;apikey;catalogVersion(catalog(id),version)[unique=true,allownull=true];creationtime[forceWrite=true,dateformat=dd.MM.yyyy hh:mm:ss];displayProductImages[allownull=true];displayProducts[allownull=true];displaySuggestions[allownull=true];maxProducts[allownull=true];maxSuggestions[allownull=true];minCharactersBeforeRequest[allownull=true];modifiedtime[dateformat=dd.MM.yyyy hh:mm:ss];name;onlyOneRestrictionMustApply[allownull=true];owner(&Item)[forceWrite=true];region;uid[unique=true,allownull=true];visible[allownull=true];waitTimeBeforeRequest[allownull=true]
+        ;Item1;xxxxxxxxxxxxx;electronicsContentCatalog:Online;05.09.2019 02:37:51;false;true;true;4;6;3;05.09.2019 03:46:23;Azurehackathon Search Box;false;;westus;AzureHackathonSearchBox;true;500
 
 5. Go to the smartedit and replace the ootb SearchBoxComponent on the SearchBoxSlot  of homepage of electronics content catalog:online with the AzureHackthonSearchBoxComponent or via Impex:
-            *insert_update ElementsForSlot;&Item;creationtime[forceWrite=true,dateformat=dd.MM.yyyy hh:mm:ss];language(isocode)[unique=true];modifiedtime[dateformat=dd.MM.yyyy hh:mm:ss];owner(&Item)[forceWrite=true];qualifier;reverseSequenceNumber;sequenceNumber;source(catalogVersion(catalog(id),version),uid)[unique=true,allownull=true];target(catalogVersion(catalog(id),version),uid)[unique=true,allownull=true]
-            ;Item589;05.09.2019 02:37:51;;05.09.2019 02:37:51;;ElementsForSlot;765,461,655;0;electronicsContentCatalog:Online:SearchBoxSlot;electronicsContentCatalog:Online:AzureHackathonSearchBox*
+
+        insert_update ElementsForSlot;&Item;creationtime[forceWrite=true,dateformat=dd.MM.yyyy hh:mm:ss];language(isocode)[unique=true];modifiedtime[dateformat=dd.MM.yyyy hh:mm:ss];owner(&Item)[forceWrite=true];qualifier;reverseSequenceNumber;sequenceNumber;source(catalogVersion(catalog(id),version),uid)[unique=true,allownull=true];target(catalogVersion(catalog(id),version),uid)[unique=true,allownull=true]
+        ;Item589;05.09.2019 02:37:51;;05.09.2019 02:37:51;;ElementsForSlot;765,461,655;0;electronicsContentCatalog:Online:SearchBoxSlot;electronicsContentCatalog:Online:AzureHackathonSearchBox
 
 6. Then you should see the Azure Speech Recognition integration on the storefront.
