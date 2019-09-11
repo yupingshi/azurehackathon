@@ -1,28 +1,74 @@
 {
     "commerceSuiteVersion":"1811.9",
     "extensions": [
-		
+    	"adaptivesearchsolr",
+        "adaptivesearchbackoffice",
+        "adaptivesearchsamplesaddon",
+        "adaptivesearchwebservices",
+        "commerceservicesbackoffice",
+        "solrfacetsearchbackoffice",
+        "solrserver",
+        "ycommercewebservices",
+        "ycommercewebservicestest",
+        "electronicsstore",
+        "apparelstore",
+        "acceleratorwebservicesaddon",
+        "orderselfserviceaddon",
+        "customersupportbackoffice",
+        "customerticketingaddon",
+        "commerceorgsamplesaddon",
+        "rulebuilderbackoffice",
+        "couponbackoffice",
+        "droolsruleengineservices",
+        "couponfacades",
+        "couponservices",
+        "promotionenginesamplesaddon",
+        "cmswebservices",
+        "smarteditwebservices",
+        "cmssmarteditwebservices",
+        "permissionswebservices",
+        "smarteditaddon",
+        "cmssmartedit",
+        "cmsbackoffice",
+        "multicountrysampledataaddon",
+        "cmsoccaddon",
+        "previewpersonalizationweb",
+        "personalizationcmsweb",
+        "personalizationsmartedit",
+        "personalizationpromotionssmartedit",
+        "personalizationsampledataaddon",
+        "personalizationpromotionssampledataaddon",
+        "personalizationpromotions",
+        "personalizationpromotionsweb",
+        "personalizationservicesbackoffice",
+        "personalizationpromotionsbackoffice",
+        "personalizationcmsbackoffice",
+        "personalizationsearchbackoffice",
+        "personalizationsearchsmartedit",
+        "personalizationsearchweb",
+        "personalizationsearchsamplesaddon",
+        "textfieldconfiguratortemplatebackoffice",
+        "textfieldconfiguratortemplateaddon",
+        "assistedservicestorefront",
+        "assistedservicewebservices",
+        "assistedservicepromotionaddon",
+        "pcmbackofficesamplesaddon",
+        "outboundservices",
+        "odata2webservices",
+        "odata2webservicesfeaturetests",
+        "kymaintegrationbackoffice",
+        "kymaintegrationsampledata",
+        "AzureHackathoncore",
+        "AzureHackathonfacades",
+        "AzureHackathontest",
+        "AzureHackathonbackoffice",
+        "AzureHackathoninitialdata",
+        "AzureHackathonfulfilmentprocess",
+        "AzureHackathonstorefront",
+        "backofficesolrsearch",
+        "backoffice"
     ],
-    "useConfig": {
-        "properties": [
-            {
-                "location": "config/local.properties"
-            }            
-        ],
-        "extensions": {
-            "location": "config/localextensions.xml",
-            "exclude": [
-               
-            ]
-        },
-        "solr": {
-            "location": "[Solr custom folder]"
-        },
-        "languages" : {
-            "location": "_LANGUAGES_"
-        }
-},
-	
+    
     "properties": [
         {
             "key": "lang.packs",
