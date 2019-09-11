@@ -59,6 +59,8 @@ public class QuickOrderPageController extends AbstractPageController
 		model.addAttribute("quickOrderMaxRows", Integer.valueOf(Config.getInt("AzureHackathonstorefront.quick.order.rows.max", 25)));
 		model.addAttribute(WebConstants.BREADCRUMBS_KEY, resourceBreadcrumbBuilder.getBreadcrumbs("breadcrumb.quickOrder"));
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
+		model.addAttribute("inkrecognizerkey", Config.getString("azurehackthon2019.inkrecognizer.key", "xxxxxxxxxxx"));
+		model.addAttribute("inkrecognizerurl", Config.getString("azurehackthon2019.inkrecognizer.url", "xxxxxxxxxxx"));
 		return ControllerConstants.Views.Pages.QuickOrder.QuickOrderPage;
 	}
 

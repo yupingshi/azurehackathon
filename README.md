@@ -148,3 +148,12 @@ Extentions are built on 1811.9
 **Integrate Azure Ink Recognizer:**
 
 1. Modified the OOTB: AzureHackathon/AzureHackathonstorefront/web/webroot/WEB-INF/views/responsive/pages/quickOrder/quickOrderPage.jsp to enable Azure Ink Recognizer integration.
+2. Access to the service endpoint is added via properties:
+
+        azurehackthon2019.inkrecognizer.key=xxxxxx
+        azurehackthon2019.inkrecognizer.url=https://azurehackationinkrecognizer.cognitiveservices.azure.com/inkrecognizer/v1.0-preview/recognize
+        
+3. Add following lines in the QuickOrderPageController.java allowing for the injection of properties into the jsp page:
+
+        model.addAttribute("inkrecognizerkey", Config.getString("azurehackthon2019.inkrecognizer.key", "xxxxxxxxxxx"));
+        model.addAttribute("inkrecognizerurl", Config.getString("azurehackthon2019.inkrecognizer.url", "xxxxxxxxxxx"));
