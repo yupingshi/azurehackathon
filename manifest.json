@@ -24,9 +24,7 @@
 },
 	"storefrontAddons": [
 		{
-		    "addon": "smarteditaddon",
-		    "storefront": "yacceleratorstorefront",
-		    "template": "yacceleratorstorefront"
+		   
 		}
 	],
     "properties": [
