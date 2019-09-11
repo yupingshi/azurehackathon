@@ -65,6 +65,7 @@
     <extension name='AzureHackathoninitialdata' />
     <extension name='AzureHackathonfulfilmentprocess' />
     <extension name='AzureHackathonstorefront' />
-  
+    <extension name='backofficesolrsearch' />
+    <extension name='backoffice' />
   </extensions>
 </hybrisconfig>
