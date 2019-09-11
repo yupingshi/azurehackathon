@@ -1,5 +1,5 @@
 {
-    "commerceSuiteVersion":"1811.5",
+    "commerceSuiteVersion":"1811.9",
     "extensions": [
 		
     ],
@@ -22,11 +22,7 @@
             "location": "_LANGUAGES_"
         }
 },
-	"storefrontAddons": [
-		{
-		   
-		}
-	],
+	
     "properties": [
         {
             "key": "lang.packs",
