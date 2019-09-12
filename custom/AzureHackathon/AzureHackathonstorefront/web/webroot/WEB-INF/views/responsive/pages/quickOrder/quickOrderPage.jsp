@@ -17,9 +17,9 @@
 	 inklanguages.set("de","de-DE");
 	 inklanguages.set("zh","zh-CN");
 
-	 SERVER_ADDRESS = "https://azurehackationinkrecognizer.cognitiveservices.azure.com";
-	 ENDPOINT_URL = SERVER_ADDRESS + "/inkrecognizer/v1.0-preview/recognize";
-	 SUBSCRIPTION_KEY = "51fc9d78a7ce4a44af78c156d36f3137";
+	//SERVER_ADDRESS = "https://azurehackationinkrecognizer.cognitiveservices.azure.com";
+	 ENDPOINT_URL = "${inkrecognizerurl}";
+	 SUBSCRIPTION_KEY = "${inkrecognizerkey}";
 
 	 // Languages for user to try
 	 LANGUAGE_TAGS_TO_TRY = ["en-US", "de-DE", "en-GB", "fr-FR", "hi-IN", "ja-JP", "ko-KR", "zh-CN"];
