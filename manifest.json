@@ -68,7 +68,13 @@
         "backofficesolrsearch",
         "backoffice"
     ],
-    
+    "storefrontAddons": [
+        {
+            "addon": "smarteditaddon",
+            "storefront": "AzureHackathonstorefront",
+            "template": "yacceleratorstorefront"
+        }
+    ],
     "properties": [
         {
             "key": "lang.packs",
