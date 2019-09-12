@@ -109,7 +109,7 @@ Extentions are built on 1811.9
         insert_update ContentSlotForPage;&Item;catalogVersion(catalog(id),version)[unique=true,allownull=true];contentSlot(catalogVersion(catalog(id),version),uid)[allownull=true];creationtime[forceWrite=true,dateformat=dd.MM.yyyy hh:mm:ss];modifiedtime[dateformat=dd.MM.yyyy hh:mm:ss];owner(&Item)[allownull=true,forceWrite=true];page(catalogVersion(catalog(id),version),uid)[allownull=true];position[allownull=true];uid[unique=true,allownull=true]
         ;Item0;electronicsContentCatalog:Online;electronicsContentCatalog:Online:Section2Bslot-AazurehackathonFAQ;06.09.2019 04:26:08;06.09.2019 04:26:08;;electronicsContentCatalog:Online:Azurehackathon FAQ Page;Section2B;00000334
 
-8. Then you should see the Azure QnA maker integration on the storefront by visiting: /azurehackahonfaq
+8. Set the contentslot of AzureHackthonFAQBotComponent to created Section2Bslot-AazurehackathonFAQ, then you should see the Azure QnA maker integration on the storefront by visiting: /azurehackahonfaq
 
 9. To enable a quick navigation to the page. We added a link to the page on shared page header at: AzureHackathon/AzureHackathonstorefront/web/webroot/WEB-INF/tags/responsive/common/header/header.tag
 
