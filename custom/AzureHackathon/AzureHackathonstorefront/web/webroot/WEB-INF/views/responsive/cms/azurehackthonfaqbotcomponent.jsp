@@ -537,17 +537,28 @@
 	}
 	var botui = new BotUI('botui-app'),address = 'House 1, First Ave.'; // id of container
 	
-	botui.message
+	/*botui.message
 	  .bot('Hi, anything I can do for you?');
 	botui.message
 	  .bot('Please ask your question below:')
 	  .then(function () {
 		  askQustion();
-	});
-
+	});*/
+	botui.message.add({
+	      photo: '/_ui/responsive/theme-alpha/images/favicon.ico',
+	      content: 'Hi, anything I can do for you?'
+	    }).then(botui.message.add({
+            photo: '/_ui/responsive/theme-alpha/images/favicon.ico',
+            //photo: 'https://moin.im/face.svg',
+            content: 'Please ask your question below:'
+          })).then(function () {
+			  askQustion();
+		});
+	
+	
 	var askQustion = function () {
 		botui.action.text({
-	        delay: 1000,
+	        delay: 500,
 	        action: {
 	          size: 100,
 	          //icon: 'map-marker',
@@ -565,8 +576,51 @@
 	    	    data: '{"question":"'+res.value+'"}',
 	    	    success: function(data){
 	    	        console.log(data);
-	    	        botui.message.bot(data.answers[0].answer);
-	    	        askQustion();
+	    	        var content = data.answers[0].answer;
+	    	        if(content.startsWith('!redirect!'))content='I have an anwser for you, check it out?';
+	    	        //botui.message.bot(data.answers[0].answer);
+	    	        botui.message.add({
+			            photo: '/_ui/responsive/theme-alpha/images/favicon.ico',
+			            //photo: 'https://moin.im/face.svg',
+			            content: content
+			          }).then(
+			        	function (res) {
+			        		if(data.answers[0].answer.startsWith('!redirect!')){
+			        			return botui.action.button({
+				    	            action: [{
+				    	              icon: 'thumbs-o-up',
+				    	              text: 'Confirm',
+				    	              value: 'confirm'
+				    	            }, {
+				    	              icon: 'thumbs-o-down',
+				    	              text: 'Cancel',
+				    	              value: 'cancel'
+				    	            }]
+				    	          });
+			        		}else{
+			        			return 'cancel';
+			        		}
+					        	  
+			          }).then(function (res) {
+			  	        if(res.value == 'confirm') {
+			  	        	var answer = data.answers[0].answer.toString();
+			  	        	var re = answer.substring(11);
+			  	        	console.log(re);
+			  	        	var slash = window.location.pathname.indexOf('electronics');
+			            	if(slash!=-1){
+			            		slash = window.location.pathname.indexOf('/', slash+1);
+			            	}
+			            	if(slash!=-1){
+			            		slash = window.location.pathname.indexOf('/', slash+1);
+			            	}
+			            	console.log( window.location.pathname.substring(0, slash)+"/"+re);
+			            	window.location = window.location.pathname.substring(0, slash)+"/"+re;
+				          } else {
+				        	askQustion();
+				          }
+				        });
+	    	        
+	    	        //askQustion();
 	    	    },
 	    	    error: function(jqXHR, textStatus, errorThrown) {
 	    	    	console.log(jqXHR + ' : ' + textStatus + ' : ' + errorThrown);

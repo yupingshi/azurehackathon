@@ -1,4 +1,4 @@
-<%@ page trimDirectiveWhitespaces="true"%>
+<%@ page trimDirectiveWhitespaces="true" contentType="text/html; charset=UTF-8" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -57,12 +57,58 @@
             }
             clearInterval(timer);
             $("#azurevr").removeClass('glyphicon-volume-down').addClass('glyphicon-volume-up');        
-            reco.close();
-            reco = undefined;
+            
             if( $("#js-site-search-input").val()=="check out"){
             	console.log("checkout");
-            	window.location = "/AzureHackathonstorefront/electronics/en/cart";
+            	var slash = window.location.pathname.indexOf('electronics');
+            	if(slash!=-1){
+            		slash = window.location.pathname.indexOf('/', slash+1);
+            	}
+            	if(slash!=-1){
+            		slash = window.location.pathname.indexOf('/', slash+1);
+            	}
+            	
+            	window.location = window.location.pathname.substring(0, slash)+"/cart";
             }
+            if( $("#js-site-search-input").val().startsWith("cheap")){
+            	//console.log("cheapest");
+            	var t = $("#js-site-search-input").val();
+            	//console.log(t);
+            	//console.log(t.indexOf(' '));
+            	var q = t.substring(t.indexOf(' ')+1);
+            	console.log(q);
+            	q=q.replace(/\s/g,"+");	
+            	var slash = window.location.pathname.indexOf('electronics');
+            	if(slash!=-1){
+            		slash = window.location.pathname.indexOf('/', slash+1);
+            	}
+            	if(slash!=-1){
+            		slash = window.location.pathname.indexOf('/', slash+1);
+            	}
+            	window.location = window.location.pathname.substring(0, slash)+"/search/?sort=price-asc&q="+q+"%3Arelevance";
+            	//console.log(q);
+            	//?sort=price-asc&q=sony%3Arelevance
+            	//console.log(window.location);
+            }else if( $("#js-site-search-input").val().startsWith('最贵的')){
+            	//console.log("cheapest");
+            	var t = $("#js-site-search-input").val();
+            	var q = t.substring(3);
+            	q=q.replace(/\s/g,"+");	
+            	var slash = window.location.pathname.indexOf('/');
+            	if(slash!=-1){
+            		slash = window.location.pathname.indexOf('/', slash+1);
+            	}
+            	if(slash!=-1){
+            		slash = window.location.pathname.indexOf('/', slash+1);
+            	}
+            	if(slash!=-1){
+            		slash = window.location.pathname.indexOf('/', slash+1);
+            	}
+            	window.location = window.location.pathname.substring(0, slash)+"/search/?sort=price-desc&q="+q;
+            }
+            
+            reco.close();
+            reco = undefined;
         };
         
         reco.recognizeOnceAsync();
