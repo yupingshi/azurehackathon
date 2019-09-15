@@ -1,4 +1,4 @@
-<%@ page trimDirectiveWhitespaces="true"%>
+<%@ page trimDirectiveWhitespaces="true" contentType="text/html; charset=UTF-8" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -526,10 +526,7 @@
             $("#azurevr").removeClass('glyphicon-volume-down').addClass('glyphicon-volume-up');        
             reco.close();
             reco = undefined;
-            if( $("#js-site-search-input").val()=="check out"){
-            	console.log("checkout");
-            	window.location = "/AzureHackathonstorefront/electronics/en/cart";
-            }
+            
         };
         
         reco.recognizeOnceAsync();
@@ -544,16 +541,43 @@
 	  .then(function () {
 		  askQustion();
 	});*/
+	var con = 'Hi, anything I can do for you?';
+	var con2 = 'Please ask your question below:';
+	
+	console.log(document.getElementById("lang-selector"));
+	/*console.log($("#lang-selector").val());
+	if($("#lang-selector").val()=='zh'){
+		con = '您好，我可以为您做些什么吗？';
+		con2 = '请在下面提出您的问题：';
+	}else if($("#lang-selector").val()=='de'){
+		con = 'Hallo，was kann ich fuer Sie tun?';
+		con2 = 'Bitte stellen Sie ihre fragen here unten:';
+	}*/
 	botui.message.add({
 	      photo: '/_ui/responsive/theme-alpha/images/favicon.ico',
-	      content: 'Hi, anything I can do for you?'
-	    }).then(botui.message.add({
-            photo: '/_ui/responsive/theme-alpha/images/favicon.ico',
-            //photo: 'https://moin.im/face.svg',
-            content: 'Please ask your question below:'
-          })).then(function () {
-			  askQustion();
-		});
+	      content: "Starting!",
+	      delay: 3000
+	    
+	    }).then(function (res) {
+	    	console.log($("#lang-selector").val());
+	    	if($("#lang-selector").val()=='zh'){
+	    		con = '您好，我可以为您做些什么吗？';
+	    		con2 = '请在下面提出您的问题：';
+	    	}else if($("#lang-selector").val()=='de'){
+	    		con = 'Hallo，was kann ich fuer Sie tun?';
+	    		con2 = 'Bitte stellen Sie ihre fragen here unten:';
+	    	}
+	    	botui.message.add({
+	  	      photo: '/_ui/responsive/theme-alpha/images/favicon.ico',
+	  	      content: con
+	  	    }).then(botui.message.add({
+	            photo: '/_ui/responsive/theme-alpha/images/favicon.ico',
+	            //photo: 'https://moin.im/face.svg',
+	            content: con2
+	          })).then(function () {
+				  askQustion();
+			});
+	    });
 	
 	
 	var askQustion = function () {
