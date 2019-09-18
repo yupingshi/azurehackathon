@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Sep 7, 2019 1:28:37 AM                      ---
+ * --- Generated at Sep 18, 2019 4:43:47 PM                     ---
  * ----------------------------------------------------------------
  *  
  * [y] hybris Platform
@@ -26,8 +26,11 @@ import de.hybris.platform.jalo.JaloBusinessException;
 import de.hybris.platform.jalo.JaloSystemException;
 import de.hybris.platform.jalo.SessionContext;
 import de.hybris.platform.jalo.extension.Extension;
+import de.hybris.platform.jalo.security.Principal;
 import de.hybris.platform.jalo.type.ComposedType;
 import de.hybris.platform.jalo.type.JaloGenericCreationException;
+import de.hybris.platform.jalo.user.User;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +44,9 @@ public abstract class GeneratedAzureHackathonCoreManager extends Extension
 	static
 	{
 		final Map<String, Map<String, AttributeMode>> ttmp = new HashMap();
+		Map<String, AttributeMode> tmp = new HashMap<String, AttributeMode>();
+		tmp.put("vrprofileid", AttributeMode.INITIAL);
+		ttmp.put("de.hybris.platform.jalo.user.User", Collections.unmodifiableMap(tmp));
 		DEFAULT_INITIAL_ATTRIBUTES = ttmp;
 	}
 	@Override
@@ -215,6 +221,42 @@ public abstract class GeneratedAzureHackathonCoreManager extends Extension
 	public String getName()
 	{
 		return AzureHackathonCoreConstants.EXTENSIONNAME;
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>User.vrprofileid</code> attribute.
+	 * @return the vrprofileid
+	 */
+	public String getVrprofileid(final SessionContext ctx, final User item)
+	{
+		return (String)item.getProperty( ctx, AzureHackathonCoreConstants.Attributes.User.VRPROFILEID);
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>User.vrprofileid</code> attribute.
+	 * @return the vrprofileid
+	 */
+	public String getVrprofileid(final User item)
+	{
+		return getVrprofileid( getSession().getSessionContext(), item );
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>User.vrprofileid</code> attribute. 
+	 * @param value the vrprofileid
+	 */
+	public void setVrprofileid(final SessionContext ctx, final User item, final String value)
+	{
+		item.setProperty(ctx, AzureHackathonCoreConstants.Attributes.User.VRPROFILEID,value);
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>User.vrprofileid</code> attribute. 
+	 * @param value the vrprofileid
+	 */
+	public void setVrprofileid(final User item, final String value)
+	{
+		setVrprofileid( getSession().getSessionContext(), item, value );
 	}
 	
 }

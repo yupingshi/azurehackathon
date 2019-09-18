@@ -94,10 +94,7 @@
             	var t = $("#js-site-search-input").val();
             	var q = t.substring(3);
             	q=q.replace(/\s/g,"+");	
-            	var slash = window.location.pathname.indexOf('/');
-            	if(slash!=-1){
-            		slash = window.location.pathname.indexOf('/', slash+1);
-            	}
+            	var slash = window.location.pathname.indexOf('electronics');
             	if(slash!=-1){
             		slash = window.location.pathname.indexOf('/', slash+1);
             	}

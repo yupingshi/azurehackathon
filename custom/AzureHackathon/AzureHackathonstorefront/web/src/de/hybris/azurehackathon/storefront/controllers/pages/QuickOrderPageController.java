@@ -10,6 +10,7 @@
  */
 package de.hybris.azurehackathon.storefront.controllers.pages;
 
+import de.hybris.azurehackathon.storefront.controllers.ControllerConstants;
 import de.hybris.platform.acceleratorfacades.product.data.ProductWrapperData;
 import de.hybris.platform.acceleratorstorefrontcommons.breadcrumb.ResourceBreadcrumbBuilder;
 import de.hybris.platform.acceleratorstorefrontcommons.constants.WebConstants;
@@ -21,7 +22,6 @@ import de.hybris.platform.commercefacades.product.ProductOption;
 import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.util.Config;
-import de.hybris.azurehackathon.storefront.controllers.ControllerConstants;
 
 import java.util.Arrays;
 
@@ -56,7 +56,8 @@ public class QuickOrderPageController extends AbstractPageController
 	{
 		storeCmsPageInModel(model, getContentPageForLabelOrId("quickOrderPage"));
 		model.addAttribute("quickOrderMinRows", Integer.valueOf(Config.getInt("AzureHackathonstorefront.quick.order.rows.min", 3)));
-		model.addAttribute("quickOrderMaxRows", Integer.valueOf(Config.getInt("AzureHackathonstorefront.quick.order.rows.max", 25)));
+		model.addAttribute("quickOrderMaxRows",
+				Integer.valueOf(Config.getInt("AzureHackathonstorefront.quick.order.rows.max", 25)));
 		model.addAttribute(WebConstants.BREADCRUMBS_KEY, resourceBreadcrumbBuilder.getBreadcrumbs("breadcrumb.quickOrder"));
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
 		model.addAttribute("inkrecognizerkey", Config.getString("azurehackthon2019.inkrecognizer.key", "xxxxxxxxxxx"));
@@ -66,15 +67,16 @@ public class QuickOrderPageController extends AbstractPageController
 
 	@RequestMapping(value = "/productInfo", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public ProductWrapperData getProductInfo(@RequestParam("code") final String code)
+	public ProductWrapperData getProductInfo(@RequestParam("code")
+	final String code)
 	{
 		ProductData productData = null;
 		String errorMsg = null;
 		try
 		{
-			productData = productFacade.getProductForCodeAndOptions(code, Arrays.asList(ProductOption.BASIC, ProductOption.PRICE,
-					ProductOption.URL, ProductOption.STOCK, ProductOption.VARIANT_MATRIX_BASE, ProductOption.VARIANT_MATRIX_URL,
-					ProductOption.VARIANT_MATRIX_MEDIA));
+			productData = productFacade.getProductForCodeAndOptions(code,
+					Arrays.asList(ProductOption.BASIC, ProductOption.PRICE, ProductOption.URL, ProductOption.STOCK,
+							ProductOption.VARIANT_MATRIX_BASE, ProductOption.VARIANT_MATRIX_URL, ProductOption.VARIANT_MATRIX_MEDIA));
 			if (Boolean.FALSE.equals(productData.getPurchasable()))
 			{
 				errorMsg = getErrorMessage("text.quickOrder.product.not.purchaseable", null);

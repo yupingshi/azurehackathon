@@ -10,6 +10,10 @@
  */
 package de.hybris.azurehackathon.storefront.controllers.pages;
 
+import de.hybris.azurehackathon.core.util.SpeakerVerificationRestClient;
+import de.hybris.azurehackathon.core.util.contract.verification.CreateProfileResponse;
+import de.hybris.azurehackathon.core.util.contract.verification.Enrollment;
+import de.hybris.azurehackathon.storefront.controllers.ControllerConstants;
 import de.hybris.platform.acceleratorfacades.ordergridform.OrderGridFormFacade;
 import de.hybris.platform.acceleratorfacades.product.data.ReadOnlyOrderGridData;
 import de.hybris.platform.acceleratorstorefrontcommons.annotations.RequireHardLogIn;
@@ -54,18 +58,25 @@ import de.hybris.platform.commerceservices.enums.CountryType;
 import de.hybris.platform.commerceservices.search.pagedata.PageableData;
 import de.hybris.platform.commerceservices.search.pagedata.SearchPageData;
 import de.hybris.platform.commerceservices.util.ResponsiveUtils;
+import de.hybris.platform.core.model.user.UserModel;
+import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.exceptions.AmbiguousIdentifierException;
 import de.hybris.platform.servicelayer.exceptions.ModelNotFoundException;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
+import de.hybris.platform.servicelayer.model.ModelService;
+import de.hybris.platform.servicelayer.user.UserService;
 import de.hybris.platform.util.Config;
-import de.hybris.azurehackathon.storefront.controllers.ControllerConstants;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -88,6 +99,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -155,6 +168,12 @@ public class AccountPageController extends AbstractSearchPageController
 
 	private static final Logger LOG = Logger.getLogger(AccountPageController.class);
 
+	@Resource(name = "configurationService")
+	private ConfigurationService configurationService;
+
+	@Resource(name = "modelService")
+	private ModelService modelService;
+
 	@Resource(name = "orderFacade")
 	private OrderFacade orderFacade;
 
@@ -181,6 +200,9 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@Resource(name = "emailValidator")
 	private EmailValidator emailValidator;
+
+	@Resource(name = "userService")
+	private UserService userService;
 
 	@Resource(name = "i18NFacade")
 	private I18NFacade i18NFacade;
@@ -260,8 +282,9 @@ public class AccountPageController extends AbstractSearchPageController
 
 
 	@RequestMapping(value = "/addressform", method = RequestMethod.GET)
-	public String getCountryAddressForm(@RequestParam("addressCode") final String addressCode,
-			@RequestParam("countryIsoCode") final String countryIsoCode, final Model model)
+	public String getCountryAddressForm(@RequestParam("addressCode")
+	final String addressCode, @RequestParam("countryIsoCode")
+	final String countryIsoCode, final Model model)
 	{
 		model.addAttribute("supportedCountries", getCountries());
 		populateModelRegionAndCountry(model, countryIsoCode);
@@ -305,9 +328,10 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
 	@RequireHardLogIn
-	public String orders(@RequestParam(value = "page", defaultValue = "0") final int page,
-			@RequestParam(value = "show", defaultValue = "Page") final ShowMode showMode,
-			@RequestParam(value = "sort", required = false) final String sortCode, final Model model) throws CMSItemNotFoundException
+	public String orders(@RequestParam(value = "page", defaultValue = "0")
+	final int page, @RequestParam(value = "show", defaultValue = "Page")
+	final ShowMode showMode, @RequestParam(value = "sort", required = false)
+	final String sortCode, final Model model) throws CMSItemNotFoundException
 	{
 		// Handle paged search results
 		final PageableData pageableData = createPageableData(page, 5, sortCode, showMode);
@@ -323,8 +347,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/order/" + ORDER_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
 	@RequireHardLogIn
-	public String order(@PathVariable("orderCode") final String orderCode, final Model model,
-			final RedirectAttributes redirectModel) throws CMSItemNotFoundException
+	public String order(@PathVariable("orderCode")
+	final String orderCode, final Model model, final RedirectAttributes redirectModel) throws CMSItemNotFoundException
 	{
 		try
 		{
@@ -354,8 +378,9 @@ public class AccountPageController extends AbstractSearchPageController
 	@RequestMapping(value = "/order/" + ORDER_CODE_PATH_VARIABLE_PATTERN
 			+ "/getReadOnlyProductVariantMatrix", method = RequestMethod.GET)
 	@RequireHardLogIn
-	public String getProductVariantMatrixForResponsive(@PathVariable("orderCode") final String orderCode,
-			@RequestParam("productCode") final String productCode, final Model model)
+	public String getProductVariantMatrixForResponsive(@PathVariable("orderCode")
+	final String orderCode, @RequestParam("productCode")
+	final String productCode, final Model model)
 	{
 		final OrderData orderData = orderFacade.getOrderDetailsForCodeWithoutUser(orderCode);
 
@@ -568,44 +593,112 @@ public class AccountPageController extends AbstractSearchPageController
 	public String updatePassword(final UpdatePasswordForm updatePasswordForm, final BindingResult bindingResult, final Model model,
 			final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
 	{
-		getPasswordValidator().validate(updatePasswordForm, bindingResult);
-		if (!bindingResult.hasErrors())
+		if (!org.springframework.util.StringUtils.isEmpty(updatePasswordForm.getFile()))
 		{
-			if (updatePasswordForm.getNewPassword().equals(updatePasswordForm.getCheckNewPassword()))
+			final UserModel currentUser = userService.getCurrentUser();
+			System.out.println(currentUser.getName());
+			final String endpoint = configurationService.getConfiguration()
+					.getString("azurehackthon2019.speakerrecognition.endpoint");
+			final String key = configurationService.getConfiguration().getString("azurehackthon2019.speakerrecognition.key");
+			final SpeakerVerificationRestClient sv = new SpeakerVerificationRestClient(endpoint, key);
+			final ObjectMapper mapper = new ObjectMapper();
+			try
 			{
-				try
+				String profileid = "";
+				if (org.springframework.util.StringUtils.isEmpty(currentUser.getVrprofileid()))
 				{
-					customerFacade.changePassword(updatePasswordForm.getCurrentPassword(), updatePasswordForm.getNewPassword());
+					final CreateProfileResponse cpr = sv.createProfile("en-us");
+					System.out.println(cpr.verificationProfileId.toString());
+					currentUser.setVrprofileid(cpr.verificationProfileId.toString());
+					profileid = cpr.verificationProfileId.toString();
+					modelService.save(currentUser);
 				}
-				catch (final PasswordMismatchException localException)
+				else
 				{
-					bindingResult.rejectValue("currentPassword", PROFILE_CURRENT_PASSWORD_INVALID, new Object[] {},
-							PROFILE_CURRENT_PASSWORD_INVALID);
+					profileid = currentUser.getVrprofileid();
 				}
+
+
+
+				final byte[] decodedByte = Base64.getDecoder().decode(updatePasswordForm.getFile().split(",")[1]);
+				final InputStream stream = new ByteArrayInputStream(decodedByte);
+
+				final Enrollment enrollment = sv.enroll(stream, UUID.fromString(profileid));
+				final String jsonString = mapper.writeValueAsString(enrollment);
+				System.out.println(jsonString);
+				//out.write(jsonString);
+				//GlobalMessages.addInfoMessage(model, jsonString);
+
+				GlobalMessages.addErrorMessage(model, jsonString);
+				storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PASSWORD_CMS_PAGE));
+				setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PASSWORD_CMS_PAGE));
+
+				model.addAttribute(BREADCRUMBS_ATTR,
+						accountBreadcrumbBuilder.getBreadcrumbs("text.account.profile.updatePasswordForm"));
+				model.addAttribute("mymessage", jsonString);
+				return getViewForPage(model);
+
+				//return REDIRECT_TO_PASSWORD_UPDATE_PAGE;
 			}
-			else
+			catch (final Exception e)
 			{
-				bindingResult.rejectValue("checkNewPassword", "validation.checkPwd.equals", new Object[] {},
-						"validation.checkPwd.equals");
+				// XXX Auto-generated catch block
+				e.printStackTrace();
+				GlobalMessages.addErrorMessage(model, FORM_GLOBAL_ERROR);
+				storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PASSWORD_CMS_PAGE));
+				setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PASSWORD_CMS_PAGE));
+
+				model.addAttribute(BREADCRUMBS_ATTR,
+						accountBreadcrumbBuilder.getBreadcrumbs("text.account.profile.updatePasswordForm"));
+				return getViewForPage(model);
+
 			}
-		}
-
-		if (bindingResult.hasErrors())
-		{
-			GlobalMessages.addErrorMessage(model, FORM_GLOBAL_ERROR);
-			storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PASSWORD_CMS_PAGE));
-			setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PASSWORD_CMS_PAGE));
-
-			model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs("text.account.profile.updatePasswordForm"));
-			return getViewForPage(model);
 		}
 		else
 		{
-			GlobalMessages.addFlashMessage(redirectAttributes, GlobalMessages.CONF_MESSAGES_HOLDER,
-					"text.account.confirmation.password.updated", null);
-			return REDIRECT_TO_PASSWORD_UPDATE_PAGE;
+			getPasswordValidator().validate(updatePasswordForm, bindingResult);
+			if (!bindingResult.hasErrors())
+			{
+				if (updatePasswordForm.getNewPassword().equals(updatePasswordForm.getCheckNewPassword()))
+				{
+					try
+					{
+						customerFacade.changePassword(updatePasswordForm.getCurrentPassword(), updatePasswordForm.getNewPassword());
+					}
+					catch (final PasswordMismatchException localException)
+					{
+						bindingResult.rejectValue("currentPassword", PROFILE_CURRENT_PASSWORD_INVALID, new Object[] {},
+								PROFILE_CURRENT_PASSWORD_INVALID);
+					}
+				}
+				else
+				{
+					bindingResult.rejectValue("checkNewPassword", "validation.checkPwd.equals", new Object[] {},
+							"validation.checkPwd.equals");
+				}
+			}
+			if (bindingResult.hasErrors())
+			{
+				GlobalMessages.addErrorMessage(model, FORM_GLOBAL_ERROR);
+				storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PASSWORD_CMS_PAGE));
+				setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PASSWORD_CMS_PAGE));
+
+				model.addAttribute(BREADCRUMBS_ATTR,
+						accountBreadcrumbBuilder.getBreadcrumbs("text.account.profile.updatePasswordForm"));
+				return getViewForPage(model);
+			}
+			else
+			{
+				GlobalMessages.addFlashMessage(redirectAttributes, GlobalMessages.CONF_MESSAGES_HOLDER,
+						"text.account.confirmation.password.updated", null);
+				return REDIRECT_TO_PASSWORD_UPDATE_PAGE;
+			}
+
 		}
+
 	}
+
+
 
 	@RequestMapping(value = "/address-book", method = RequestMethod.GET)
 	@RequireHardLogIn
@@ -720,8 +813,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/edit-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
 	@RequireHardLogIn
-	public String editAddress(@PathVariable("addressCode") final String addressCode, final Model model)
-			throws CMSItemNotFoundException
+	public String editAddress(@PathVariable("addressCode")
+	final String addressCode, final Model model) throws CMSItemNotFoundException
 	{
 		final AddressForm addressForm = new AddressForm();
 		model.addAttribute(COUNTRY_DATA_ATTR, checkoutFacade.getCountries(CountryType.SHIPPING));
@@ -850,7 +943,8 @@ public class AccountPageController extends AbstractSearchPageController
 	@RequestMapping(value = "/remove-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method =
 	{ RequestMethod.GET, RequestMethod.POST })
 	@RequireHardLogIn
-	public String removeAddress(@PathVariable("addressCode") final String addressCode, final RedirectAttributes redirectModel)
+	public String removeAddress(@PathVariable("addressCode")
+	final String addressCode, final RedirectAttributes redirectModel)
 	{
 		final AddressData addressData = new AddressData();
 		addressData.setId(addressCode);
@@ -862,7 +956,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/set-default-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
 	@RequireHardLogIn
-	public String setDefaultAddress(@PathVariable("addressCode") final String addressCode, final RedirectAttributes redirectModel)
+	public String setDefaultAddress(@PathVariable("addressCode")
+	final String addressCode, final RedirectAttributes redirectModel)
 	{
 		final AddressData addressData = new AddressData();
 		addressData.setDefaultAddress(true);
@@ -889,7 +984,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/set-default-payment-details", method = RequestMethod.POST)
 	@RequireHardLogIn
-	public String setDefaultPaymentDetails(@RequestParam final String paymentInfoId)
+	public String setDefaultPaymentDetails(@RequestParam
+	final String paymentInfoId)
 	{
 		CCPaymentInfoData paymentInfoData = null;
 		if (StringUtils.isNotBlank(paymentInfoId))
@@ -902,8 +998,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/remove-payment-method", method = RequestMethod.POST)
 	@RequireHardLogIn
-	public String removePaymentMethod(@RequestParam(value = "paymentInfoId") final String paymentMethodId,
-			final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
+	public String removePaymentMethod(@RequestParam(value = "paymentInfoId")
+	final String paymentMethodId, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
 	{
 		userFacade.unlinkCCPaymentInfo(paymentMethodId);
 		GlobalMessages.addFlashMessage(redirectAttributes, GlobalMessages.CONF_MESSAGES_HOLDER,
@@ -925,8 +1021,9 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/consents/give/{consentTemplateId}/{version}", method = RequestMethod.POST)
 	@RequireHardLogIn
-	public String giveConsent(@PathVariable final String consentTemplateId, @PathVariable final Integer version,
-			final RedirectAttributes redirectModel)
+	public String giveConsent(@PathVariable
+	final String consentTemplateId, @PathVariable
+	final Integer version, final RedirectAttributes redirectModel)
 	{
 		try
 		{
@@ -952,8 +1049,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/consents/withdraw/{consentCode}", method = RequestMethod.POST)
 	@RequireHardLogIn
-	public String withdrawConsent(@PathVariable final String consentCode, final RedirectAttributes redirectModel)
-			throws CMSItemNotFoundException
+	public String withdrawConsent(@PathVariable
+	final String consentCode, final RedirectAttributes redirectModel) throws CMSItemNotFoundException
 	{
 		try
 		{

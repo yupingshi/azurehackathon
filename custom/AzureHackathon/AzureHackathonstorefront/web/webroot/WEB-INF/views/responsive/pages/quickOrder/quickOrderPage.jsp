@@ -1,4 +1,4 @@
-<%@ page trimDirectiveWhitespaces="true"%>
+<%@ page trimDirectiveWhitespaces="true" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="template" tagdir="/WEB-INF/tags/responsive/template"%>
 <%@ taglib prefix="cms" uri="http://hybris.com/tld/cmstags"%>
@@ -17,10 +17,11 @@
 	 inklanguages.set("de","de-DE");
 	 inklanguages.set("zh","zh-CN");
 
-	//SERVER_ADDRESS = "https://azurehackationinkrecognizer.cognitiveservices.azure.com";
+	 //SERVER_ADDRESS = "https://azurehackationinkrecognizer.cognitiveservices.azure.com";
 	 ENDPOINT_URL = "${inkrecognizerurl}";
 	 SUBSCRIPTION_KEY = "${inkrecognizerkey}";
-
+	console.log(ENDPOINT_URL);
+	console.log(SUBSCRIPTION_KEY);
 	 // Languages for user to try
 	 LANGUAGE_TAGS_TO_TRY = ["en-US", "de-DE", "en-GB", "fr-FR", "hi-IN", "ja-JP", "ko-KR", "zh-CN"];
 

@@ -18,6 +18,24 @@ public class UpdatePasswordForm
 	private String currentPassword;
 	private String newPassword;
 	private String checkNewPassword;
+	private String file;
+
+	/**
+	 * @return the file
+	 */
+	public String getFile()
+	{
+		return file;
+	}
+
+	/**
+	 * @param file
+	 *           the file to set
+	 */
+	public void setFile(final String file)
+	{
+		this.file = file;
+	}
 
 	public String getCurrentPassword()
 	{

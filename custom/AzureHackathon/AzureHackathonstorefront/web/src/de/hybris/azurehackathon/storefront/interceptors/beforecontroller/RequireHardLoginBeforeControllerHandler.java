@@ -10,6 +10,10 @@
  */
 package de.hybris.azurehackathon.storefront.interceptors.beforecontroller;
 
+import de.hybris.azurehackathon.storefront.security.evaluator.impl.RequireHardLoginEvaluator;
+import de.hybris.platform.acceleratorstorefrontcommons.annotations.RequireHardLogIn;
+import de.hybris.platform.acceleratorstorefrontcommons.interceptors.BeforeControllerHandler;
+
 import java.lang.annotation.Annotation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +24,6 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.web.method.HandlerMethod;
-
-import de.hybris.platform.acceleratorstorefrontcommons.annotations.RequireHardLogIn;
-import de.hybris.platform.acceleratorstorefrontcommons.interceptors.BeforeControllerHandler;
-import de.hybris.azurehackathon.storefront.security.evaluator.impl.RequireHardLoginEvaluator;
 
 
 /**
@@ -78,7 +78,7 @@ public class RequireHardLoginBeforeControllerHandler implements BeforeController
 	}
 
 	@Required
-	public void setRequireHardLoginEvaluator(RequireHardLoginEvaluator requireHardLoginEvaluator)
+	public void setRequireHardLoginEvaluator(final RequireHardLoginEvaluator requireHardLoginEvaluator)
 	{
 		this.requireHardLoginEvaluator = requireHardLoginEvaluator;
 	}
@@ -94,7 +94,7 @@ public class RequireHardLoginBeforeControllerHandler implements BeforeController
 			final RequireHardLogIn annotation = findAnnotation(handler, RequireHardLogIn.class);
 			if (annotation != null)
 			{
-				boolean redirect = requireHardLoginEvaluator.evaluate(request, response);
+				final boolean redirect = requireHardLoginEvaluator.evaluate(request, response);
 
 				if (redirect)
 				{
