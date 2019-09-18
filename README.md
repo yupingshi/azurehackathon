@@ -157,3 +157,4 @@ Extentions are built on 1811.9
 
         model.addAttribute("inkrecognizerkey", Config.getString("azurehackthon2019.inkrecognizer.key", "xxxxxxxxxxx"));
         model.addAttribute("inkrecognizerurl", Config.getString("azurehackthon2019.inkrecognizer.url", "xxxxxxxxxxx"));
+
