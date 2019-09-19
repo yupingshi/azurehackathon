@@ -69,8 +69,7 @@
             	}
             	
             	window.location = window.location.pathname.substring(0, slash)+"/cart";
-            }
-            if( $("#js-site-search-input").val().startsWith("cheap")){
+            }else if( $("#js-site-search-input").val().startsWith("cheap")){
             	//console.log("cheapest");
             	var t = $("#js-site-search-input").val();
             	//console.log(t);
@@ -102,6 +101,11 @@
             		slash = window.location.pathname.indexOf('/', slash+1);
             	}
             	window.location = window.location.pathname.substring(0, slash)+"/search/?sort=price-desc&q="+q;
+            }else{
+            	var t = $("#js-site-search-input").val();
+            	var q = t.substring(t.indexOf(' ')+1);
+            	q=q.replace(/\s/g,"+");	
+            	window.location = window.location.pathname.substring(0, slash)+"/search/?text="+q;
             }
             
             reco.close();
