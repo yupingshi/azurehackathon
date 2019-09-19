@@ -524,6 +524,35 @@ function createVerificationProfile(blob){
 				
 				</div>
 				<div class="row">
+
+				<select id="updatepasswordselect"> </select>
+				
+				</div>
+				<script type="text/javascript">
+					var slash = window.location.pathname.indexOf('/electronics');
+					var url = window.location.pathname.substring(0, slash)+"/speakerrecognition/getverificationphrases";
+					console.log(window.location);
+				    console.log(url);
+				    function reqListener () {
+				    	  console.log(this.responseText);
+				    	  var obj = JSON.parse(this.responseText);
+				    	  console.log(obj);
+				    	  var select = document.getElementById("updatepasswordselect");
+				    	  for (var i = 0; i< obj.length; i++){
+				    		    var opt = document.createElement('option');
+				    		    opt.value = obj[i].phrase;
+				    		    opt.innerHTML = obj[i].phrase;
+				    		    select.appendChild(opt);
+				    		   
+				    		}
+				    }
+
+				    	var oReq = new XMLHttpRequest();
+				    	oReq.onload = reqListener;
+				    	oReq.open("GET", url, true);
+				    	oReq.send();
+				</script>
+				<div class="row">
 						<div class="col-sm-6 col-sm-push-6">
 							<div class="accountActions">
 								<button type="button" class="btn btn-primary btn-block" onclick="enrollNewVerificationProfile();">

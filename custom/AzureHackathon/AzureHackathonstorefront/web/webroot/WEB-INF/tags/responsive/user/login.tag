@@ -520,6 +520,31 @@ function verifyProfile(blob){
 				<spring:theme code="${actionNameKey}" />
 			</button>
 		</ycommerce:testId>
+		<select id="loginselect"> </select>
+		<script type="text/javascript">
+					var slash = window.location.pathname.indexOf('/electronics');
+					var url = window.location.pathname.substring(0, slash)+"/speakerrecognition/getverificationphrases";
+					console.log(window.location);
+				    console.log(url);
+				    function reqListener () {
+				    	  console.log(this.responseText);
+				    	  var obj = JSON.parse(this.responseText);
+				    	  console.log(obj);
+				    	  var select = document.getElementById("loginselect");
+				    	  for (var i = 0; i< obj.length; i++){
+				    		    var opt = document.createElement('option');
+				    		    opt.value = obj[i].phrase;
+				    		    opt.innerHTML = obj[i].phrase;
+				    		    select.appendChild(opt);
+				    		   
+				    		}
+				    }
+
+				    	var oReq = new XMLHttpRequest();
+				    	oReq.onload = reqListener;
+				    	oReq.open("GET", url, true);
+				    	oReq.send();
+				</script>
 		<ycommerce:testId code="vrloginButton">
 			<button type="button" class="btn btn-primary btn-block" onclick="startListeningForVerification();">
 				Voice Login
