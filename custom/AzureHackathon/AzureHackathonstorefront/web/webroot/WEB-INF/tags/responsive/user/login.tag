@@ -456,7 +456,7 @@ function createVerificationProfile(blob){
 	    // The contents of the BLOB are in reader.result:
 	    base64data = reader.result;                
       	console.log(base64data);
-	    hidden_elem.value = base64data;
+	    hidden_elem.value = "SR:"+base64data;
 	    document.getElementById("mypasswordform").submit();
 	}
 	
@@ -467,7 +467,17 @@ function startListeningForVerification(){
 }
 
 function verifyProfile(blob){
-	console.log(blob);
+	var hidden_elem = document.getElementById("j_password");
+	var reader = new FileReader();
+	reader.readAsDataURL(blob);
+	var base64data;
+	reader.onloadend = (event) => {
+	    // The contents of the BLOB are in reader.result:
+	    base64data = reader.result;                
+      	console.log(base64data);
+	    hidden_elem.value = base64data;
+	    document.getElementById("myloginform").submit();
+	}
 }
 (function () {
 	// Cross browser sound recording using the web audio API
@@ -486,7 +496,7 @@ function verifyProfile(blob){
 	</p>
 </c:if>
 
-<form:form action="${action}" method="post" commandName="loginForm">
+<form:form action="${action}" method="post" commandName="loginForm" id="myloginform">
 	<c:if test="${not empty message}">
 		<span class="has-error"> <spring:theme code="${message}" />
 		</span>

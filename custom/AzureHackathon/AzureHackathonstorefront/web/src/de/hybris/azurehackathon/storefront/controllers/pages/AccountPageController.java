@@ -624,6 +624,9 @@ public class AccountPageController extends AbstractSearchPageController
 				final InputStream stream = new ByteArrayInputStream(decodedByte);
 
 				final Enrollment enrollment = sv.enroll(stream, UUID.fromString(profileid));
+
+
+
 				final String jsonString = mapper.writeValueAsString(enrollment);
 				System.out.println(jsonString);
 				//out.write(jsonString);
